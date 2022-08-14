@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body onmousemove="GetMousePos(event)">
+    <div class="flex flex-col items-center py-16 bg-gray-100">
+        <ul id="filter1" class="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4">
+            <li class="filter-switch-item flex relative h-8 bg-gray-300x">
+                <input type="radio" name="aim" value ="mouse"id="filter1-0" class="sr-only" checked>
+                <label for="filter1-0" class="h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                    Follow Mouse
+                </label>
+                <div aria-hidden="true" class="filter-active"></div>
+            </li>
+            <li class="filter-switch-item flex relative h-8 bg-gray-300x">
+                <input type="radio" name="aim" value="rotate"id="filter1-1" class="sr-only">
+                <label for="filter1-1" class="h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                    Rotate In Circle
+                </label>
+            </li>
+            <li class="filter-switch-item flex relative h-8 bg-gray-300x">
+                <input type="radio" name="aim" value="light"id="filter1-2" class="sr-only">
+                <label for="filter1-2" class="h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                    360 Light
+                </label>
+            </li>
+            
+        </ul>
+    </div>
+    <div class ="flex"style="justify-content: center; text-align:center">
+        <canvas id="canvas" style="width: 650px; height: 650px; border: 1px solid black"></canvas>
+    </div>
+    <script src="raycast.js"></script>
+</body>
+</html>
+<style>
+    .filter-switch label {
+        cursor: pointer;
+    }
+
+    .filter-switch-item input:checked + label {
+        color: inherit;
+    }
+
+    .filter-switch-item input:not(:checked) + label {
+        --bg-opacity: 0;
+        box-shadow: none;
+    }
+
+</style>
