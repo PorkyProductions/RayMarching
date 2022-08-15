@@ -7,8 +7,8 @@ All rights reserved.
 
 */
 var canvas = document.getElementById("canvas");
-canvas.width = 650;
-canvas.height = 650;
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
 var ctx = canvas.getContext("2d");
 var obstacleSize = 40;
 var mouseX = 0;
@@ -16,20 +16,20 @@ var mouseY = 0;
 var laserAngle = 0;
 var obstacles = [];
 function Update() {
-    ctx.clearRect(0, 0, 650, 650);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     DrawCircle(mouseX, mouseY, 10);
     obstacles.forEach(function (obs) {
         FillCircle(obs[0], obs[1], obstacleSize, "black");
     });
     switch (AimInput()) {
         case "mouse":
-            laserAngle = Math.atan2(mouseY - 650 / 2, mouseX - 650 / 2);
+            laserAngle = Math.atan2(mouseY - canvas.height / 2, mouseX - canvas.width / 2);
             break;
         case "rotate":
             laserAngle += 1 / 100;
     }
     if (AimInput() != "light") {
-        DrawRect(650 / 2, 650 / 2, 40, 3, laserAngle * 180 / Math.PI, "red");
+        DrawRect(canvas.width / 2, canvas.height / 2, 40, 3, laserAngle * 180 / Math.PI, "red");
         Laser(laserAngle, true);
     }
     else {
@@ -39,15 +39,15 @@ function Update() {
     }
     ctx.save();
     ctx.fillStyle = "red";
-    FillCircle(650 / 2, 650 / 2, 10, "black");
+    FillCircle(canvas.width / 2, canvas.height / 2, 10, "black");
     ctx.restore();
 }
 function Laser(laserAngle, draw) {
     var vectorX = Math.cos(laserAngle);
     var vectorY = Math.sin(laserAngle);
     var distance = 10000;
-    var curX = 650 / 2;
-    var curY = 650 / 2;
+    var curX = canvas.width / 2;
+    var curY = canvas.height / 2;
     if (obstacles.length > 0) {
         distance = 0;
         //while (distance < 10000 & increase > 0.1) {
@@ -61,8 +61,8 @@ function Laser(laserAngle, draw) {
                 DrawCircle(curX, curY, smallestDistance);
             }
             distance += smallestDistance;
-            curX = 650 / 2 + vectorX * distance;
-            curY = 650 / 2 + vectorY * distance;
+            curX = canvas.width / 2 + vectorX * distance;
+            curY = canvas.height / 2 + vectorY * distance;
             if (smallestDistance < 1) {
                 ctx.save();
                 ctx.strokeStyle = "red";
@@ -76,8 +76,8 @@ function Laser(laserAngle, draw) {
         }
     }
     ctx.beginPath();
-    ctx.moveTo(650 / 2, 650 / 2);
-    ctx.lineTo(650 / 2 + (vectorX * distance), 650 / 2 + (vectorY * distance));
+    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    ctx.lineTo(canvas.width / 2 + (vectorX * distance), canvas.height / 2 + (vectorY * distance));
     ctx.stroke();
 }
 function GetDistance(x1, y1, x2, y2) {
@@ -130,14 +130,21 @@ window.onload = function () {
         if (event.which == 3) {
             return;
         }
-        obstacles.push([mouseX, mouseY]);
+        if (MouseInBounds()) {
+            obstacles.push([mouseX, mouseY]);
+        }
     };
 };
 function GetMousePos(evt) {
     Update();
     var rect = canvas.getBoundingClientRect();
-    mouseX = evt.clientX - rect.left;
-    mouseY = evt.clientY - rect.top;
+        mouseX = evt.clientX - rect.left;
+        mouseY = evt.clientY - rect.top;
+    
+}
+function MouseInBounds() {
+    return (mouseX > 0 && mouseY > 0 && mouseX < canvas.width && mouseY < canvas.height) 
+    
 }
 setInterval(function () {
     Update();
