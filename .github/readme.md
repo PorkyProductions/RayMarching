@@ -1,6 +1,6 @@
 # RayMarching
 **A project by**
-![Porky Productions Experimental](./ppioExpermentalDark.svg)
+![Porky Productions Experimental](./ppioExpermentalDark.png)
 
 - [RayMarching](#raymarching)
 - [How it works](#how-it-works)

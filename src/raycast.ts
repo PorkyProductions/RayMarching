@@ -6,19 +6,19 @@ All rights reserved.
 
 
 */
-var canvas = document.getElementById("canvas");
+let canvas: any = document.getElementById("canvas");
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
-var ctx = canvas.getContext("2d");
-var obstacleSize = 40;
-var mouseX = 0;
-var mouseY = 0;
-var laserAngle = 0;
-var obstacles = [];
+let ctx = canvas.getContext("2d");
+let obstacleSize = 40;
+let mouseX = 0;
+let mouseY = 0;
+let laserAngle = 0;
+let obstacles = [];
 function Update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     DrawCircle(mouseX, mouseY, 10);
-    obstacles.forEach(function (obs) { return FillCircle(obs[0], obs[1], obstacleSize, "black"); });
+    obstacles.forEach((obs) => FillCircle(obs[0], obs[1], obstacleSize, "black"));
     switch (AimInput()) {
         case "mouse":
             laserAngle = Math.atan2(mouseY - canvas.height / 2, mouseX - canvas.width / 2);
@@ -31,7 +31,7 @@ function Update() {
         Laser(laserAngle, true);
     }
     else {
-        for (var i = 0; i < 360; i += 1) {
+        for (let i = 0; i < 360; i += 1) {
             Laser(i / 180 * Math.PI, false);
         }
     }
@@ -41,18 +41,18 @@ function Update() {
     ctx.restore();
 }
 function Laser(laserAngle, draw) {
-    var vectorX = Math.cos(laserAngle);
-    var vectorY = Math.sin(laserAngle);
-    var distance = 10000;
-    var curX = canvas.width / 2;
-    var curY = canvas.height / 2;
+    let vectorX = Math.cos(laserAngle);
+    let vectorY = Math.sin(laserAngle);
+    let distance = 10000;
+    let curX = canvas.width / 2;
+    let curY = canvas.height / 2;
     if (obstacles.length > 0) {
         distance = 0;
         //while (distance < 10000 & increase > 0.1) {
-        var smallError_1 = false;
-        var _loop_1 = function (i) {
-            var smallestDistance = 10000;
-            obstacles.forEach(function (obs) { return smallestDistance = Math.min(smallestDistance, GetDistance(curX, curY, obs[0], obs[1]) - obstacleSize); });
+        let smallError = false;
+        let _loop_1 = (i) => {
+            let smallestDistance = 10000;
+            obstacles.forEach((obs) => smallestDistance = Math.min(smallestDistance, GetDistance(curX, curY, obs[0], obs[1]) - obstacleSize));
             if (smallestDistance > 0 && draw) {
                 DrawCircle(curX, curY, smallestDistance);
             }
@@ -64,10 +64,10 @@ function Laser(laserAngle, draw) {
                 ctx.strokeStyle = "red";
                 FillCircle(curX, curY, 5, "red");
                 ctx.restore();
-                smallError_1 = true;
+                smallError = true;
             }
         };
-        for (var i = 0; i < 100 && !smallError_1; i++) {
+        for (let i = 0; i < 100 && !smallError; i++) {
             _loop_1(i);
         }
     }
@@ -77,8 +77,8 @@ function Laser(laserAngle, draw) {
     ctx.stroke();
 }
 function GetDistance(x1, y1, x2, y2) {
-    var y = x2 - x1;
-    var x = y2 - y1;
+    let y = x2 - x1;
+    let x = y2 - y1;
     return Math.sqrt(x * x + y * y);
 }
 function DrawCircle(x, y, r) {
@@ -113,16 +113,16 @@ function DrawRect(x, y, width, height, degrees, color) {
     ctx.restore();
 }
 function AimInput() {
-    var ele = document.getElementsByName('aim');
-    for (var i = 0; i < ele.length; i++) {
+    let ele: any = document.getElementsByName('aim');
+    for (let i = 0; i < ele.length; i++) {
         if (ele[i].checked)
             return ele[i].value;
     }
 }
-var mouseDown = 0;
-var mouseRightDown = 0;
-window.onload = function () {
-    document.body.onmousedown = function (event) {
+let mouseDown = 0;
+let mouseRightDown = 0;
+window.onload = () => {
+    document.body.onmousedown = (event) => {
         if (event.which == 3) {
             return;
         }
@@ -133,14 +133,16 @@ window.onload = function () {
 };
 function GetMousePos(evt) {
     Update();
-    var rect = canvas.getBoundingClientRect();
-    mouseX = evt.clientX - rect.left;
-    mouseY = evt.clientY - rect.top;
+    let rect = canvas.getBoundingClientRect();
+        mouseX = evt.clientX - rect.left;
+        mouseY = evt.clientY - rect.top;
+    
 }
 function MouseInBounds() {
-    return (mouseX > 0 && mouseY > 0 && mouseX < canvas.width && mouseY < canvas.height);
+    return (mouseX > 0 && mouseY > 0 && mouseX < canvas.width && mouseY < canvas.height) 
+    
 }
-setInterval(function () { return Update(); }, 50);
-window.addEventListener('contextmenu', function (e) {
+setInterval(() => Update(), 50);
+window.addEventListener('contextmenu', (e) => {
     e.preventDefault();
 }, false);
