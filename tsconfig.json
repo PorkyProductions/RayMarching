@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "outDir": "./public/",
+        "diagnostics": true,
+        "target": "ES3",
+        "pretty": true
+    },
+    "files": [
+        "./src/raycast.ts"
+    ]
+}
